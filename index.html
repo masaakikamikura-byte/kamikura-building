@@ -4,19 +4,25 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>有限会社 神倉ビル</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #0f1117;
-      --surface: #1a1d27;
-      --card: #22263a;
-      --border: #2e3250;
-      --accent: #4f8ef7;
-      --accent2: #7c5cbf;
-      --text: #e8eaf6;
-      --muted: #8b90b0;
-      --radius: 16px;
+      --bg:        #08090f;
+      --surface:   #0e1018;
+      --card:      #13151f;
+      --border:    rgba(255,255,255,0.07);
+      --gold:      #c8a96e;
+      --gold-lt:   #e2c89a;
+      --gold-dim:  rgba(200,169,110,0.18);
+      --text:      #e8e6e0;
+      --muted:     #8a8780;
+      --muted2:    #5a5855;
+      --radius:    2px;
+      --max:       1140px;
     }
 
     html { scroll-behavior: smooth; }
@@ -24,395 +30,591 @@
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
-      line-height: 1.7;
-      min-height: 100vh;
+      font-family: 'Noto Sans JP', sans-serif;
+      font-weight: 300;
+      line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* ── Fade-in animation ── */
-    .fade-in {
+    /* ─── Reveal animation ─── */
+    .reveal {
       opacity: 0;
-      transform: translateY(28px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
+      transform: translateY(36px);
+      transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1),
+                  transform 0.9s cubic-bezier(0.16,1,0.3,1);
     }
-    .fade-in.visible {
-      opacity: 1;
-      transform: translateY(0);
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.12s; }
+    .reveal-delay-2 { transition-delay: 0.24s; }
+    .reveal-delay-3 { transition-delay: 0.36s; }
+
+    /* ─── Gold rule ─── */
+    .rule {
+      width: 40px;
+      height: 1px;
+      background: var(--gold);
+      display: inline-block;
+      vertical-align: middle;
     }
 
-    /* ── Header ── */
+    /* ════════════════════════
+       HEADER
+    ════════════════════════ */
     header {
-      background: linear-gradient(135deg, #0d1020 0%, #1a1d3a 100%);
-      border-bottom: 1px solid var(--border);
-      padding: 18px 24px;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      padding: 0 48px;
+      height: 72px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      backdrop-filter: blur(8px);
+      transition: background 0.4s, border-color 0.4s;
+      border-bottom: 1px solid transparent;
+    }
+    header.scrolled {
+      background: rgba(8,9,15,0.92);
+      border-color: var(--border);
+      backdrop-filter: blur(12px);
     }
 
-    .logo {
-      font-size: 1.1rem;
-      font-weight: 700;
-      letter-spacing: 0.05em;
+    .logo-wrap { display: flex; flex-direction: column; gap: 1px; }
+    .logo-en {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.72rem;
+      font-weight: 400;
+      letter-spacing: 0.28em;
+      color: var(--gold);
+      text-transform: uppercase;
+    }
+    .logo-ja {
+      font-size: 0.88rem;
+      font-weight: 400;
+      letter-spacing: 0.22em;
       color: var(--text);
     }
-    .logo span { color: var(--accent); }
 
-    nav { display: flex; gap: 28px; }
+    nav { display: flex; align-items: center; gap: 40px; }
     nav a {
+      font-size: 0.78rem;
+      font-weight: 400;
+      letter-spacing: 0.2em;
       color: var(--muted);
       text-decoration: none;
-      font-size: 0.9rem;
-      transition: color 0.2s;
+      text-transform: uppercase;
+      position: relative;
+      transition: color 0.3s;
     }
-    nav a:hover { color: var(--accent); }
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 0; height: 1px;
+      background: var(--gold);
+      transition: width 0.3s ease;
+    }
+    nav a:hover { color: var(--gold-lt); }
+    nav a:hover::after { width: 100%; }
 
-    /* ── Hero ── */
+    /* ════════════════════════
+       HERO
+    ════════════════════════ */
     .hero {
-      text-align: center;
-      padding: 120px 24px 80px;
-      background: radial-gradient(ellipse at 50% 0%, rgba(79,142,247,0.12) 0%, transparent 70%);
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
     }
 
-    .hero-badge {
-      display: inline-block;
-      background: rgba(79,142,247,0.15);
-      border: 1px solid rgba(79,142,247,0.35);
-      color: var(--accent);
-      font-size: 0.78rem;
-      letter-spacing: 0.12em;
-      padding: 5px 16px;
-      border-radius: 999px;
-      margin-bottom: 28px;
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 70% 40%, rgba(200,169,110,0.06) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 80% at 20% 80%, rgba(255,255,255,0.02) 0%, transparent 50%),
+        linear-gradient(160deg, #0e1020 0%, #08090f 60%, #0a0b10 100%);
+    }
+
+    /* Decorative grid lines */
+    .hero-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(200,169,110,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(200,169,110,0.04) 1px, transparent 1px);
+      background-size: 80px 80px;
+      mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 30%, transparent 100%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 64px 120px;
+    }
+
+    .hero-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 32px;
+      opacity: 0;
+      animation: fadeSlide 1s 0.3s cubic-bezier(0.16,1,0.3,1) forwards;
+    }
+    .hero-eyebrow span {
+      font-size: 0.72rem;
+      letter-spacing: 0.3em;
+      color: var(--gold);
+      text-transform: uppercase;
     }
 
     .hero h1 {
-      font-size: clamp(2rem, 5vw, 3.4rem);
-      font-weight: 800;
-      letter-spacing: 0.04em;
-      line-height: 1.3;
-      margin-bottom: 20px;
-    }
-
-    .hero h1 .highlight {
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .hero p {
-      max-width: 560px;
-      margin: 0 auto 40px;
-      color: var(--muted);
-      font-size: 1.05rem;
-    }
-
-    .btn {
-      display: inline-block;
-      padding: 13px 36px;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      color: #fff;
-      border-radius: 999px;
-      text-decoration: none;
-      font-weight: 700;
-      font-size: 0.95rem;
-      letter-spacing: 0.05em;
-      transition: opacity 0.2s, transform 0.2s;
-      box-shadow: 0 4px 20px rgba(79,142,247,0.3);
-    }
-    .btn:hover { opacity: 0.85; transform: translateY(-2px); }
-
-    /* ── Section common ── */
-    section { padding: 90px 24px; }
-    .section-inner { max-width: 900px; margin: 0 auto; }
-
-    .section-label {
-      text-align: center;
-      font-size: 0.78rem;
-      letter-spacing: 0.15em;
-      color: var(--accent);
-      text-transform: uppercase;
-      margin-bottom: 12px;
-    }
-
-    .section-title {
-      text-align: center;
-      font-size: clamp(1.5rem, 3vw, 2.1rem);
-      font-weight: 800;
-      margin-bottom: 48px;
-      letter-spacing: 0.03em;
-    }
-
-    /* ── Cards grid ── */
-    .cards {
-      display: grid;
-      gap: 20px;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    }
-
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 32px 28px;
-      transition: transform 0.25s, box-shadow 0.25s;
-    }
-    .card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 40px rgba(0,0,0,0.5);
-    }
-
-    .card-icon {
-      font-size: 2rem;
-      margin-bottom: 16px;
-    }
-
-    .card h3 {
-      font-size: 1.05rem;
-      font-weight: 700;
-      margin-bottom: 10px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.2rem, 7vw, 6.5rem);
+      font-weight: 300;
+      line-height: 1.12;
+      letter-spacing: 0.02em;
       color: var(--text);
+      opacity: 0;
+      animation: fadeSlide 1s 0.5s cubic-bezier(0.16,1,0.3,1) forwards;
+    }
+    .hero h1 em {
+      font-style: italic;
+      color: var(--gold-lt);
     }
 
-    .card p {
+    .hero-sub {
+      margin-top: 32px;
+      max-width: 480px;
+      font-size: 0.88rem;
+      font-weight: 300;
       color: var(--muted);
-      font-size: 0.92rem;
-      line-height: 1.75;
+      line-height: 2;
+      opacity: 0;
+      animation: fadeSlide 1s 0.7s cubic-bezier(0.16,1,0.3,1) forwards;
     }
 
-    /* ── MVV accent cards ── */
-    .mvv .card:nth-child(1) { border-top: 3px solid var(--accent); }
-    .mvv .card:nth-child(2) { border-top: 3px solid #50c8a8; }
-    .mvv .card:nth-child(3) { border-top: 3px solid var(--accent2); }
-
-    /* ── About ── */
-    .about-box {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 40px 40px;
+    .hero-scroll {
+      position: absolute;
+      bottom: 48px; right: 64px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      opacity: 0;
+      animation: fadeSlide 1s 1s cubic-bezier(0.16,1,0.3,1) forwards;
+    }
+    .hero-scroll span {
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      color: var(--muted2);
+      text-transform: uppercase;
+      writing-mode: vertical-rl;
+    }
+    .scroll-line {
+      width: 1px;
+      height: 60px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
     }
 
-    .about-box p {
-      color: var(--muted);
-      font-size: 0.97rem;
-      margin-bottom: 28px;
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.4; }
+      50%       { opacity: 1; }
     }
 
-    .info-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.93rem;
+    /* ════════════════════════
+       SECTION COMMON
+    ════════════════════════ */
+    section {
+      padding: 120px 64px;
     }
 
-    .info-table th, .info-table td {
-      padding: 13px 16px;
-      text-align: left;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .info-table th {
-      color: var(--accent);
-      font-weight: 600;
-      width: 30%;
-      white-space: nowrap;
-    }
-
-    .info-table td { color: var(--text); }
-
-    .info-table tr:last-child th,
-    .info-table tr:last-child td { border-bottom: none; }
-
-    /* ── Divider ── */
-    .divider {
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--border), transparent);
-      max-width: 900px;
+    .inner {
+      max-width: var(--max);
       margin: 0 auto;
     }
 
-    /* ── Contact ── */
-    .contact-box {
-      background: linear-gradient(135deg, rgba(79,142,247,0.1), rgba(124,92,191,0.1));
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 56px 40px;
-      text-align: center;
-    }
-
-    .contact-box h2 {
-      font-size: clamp(1.3rem, 2.5vw, 1.8rem);
-      font-weight: 800;
-      margin-bottom: 12px;
-    }
-
-    .contact-box p {
-      color: var(--muted);
-      margin-bottom: 32px;
-      font-size: 0.97rem;
-    }
-
-    .contact-info {
+    .sec-head {
       display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 16px;
-      margin-top: 28px;
+      align-items: flex-start;
+      gap: 64px;
+      margin-bottom: 72px;
+    }
+    .sec-head-left { flex-shrink: 0; }
+    .sec-en {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.8rem, 5vw, 4.5rem);
+      font-weight: 300;
+      font-style: italic;
+      color: rgba(200,169,110,0.15);
+      line-height: 1;
+      letter-spacing: 0.04em;
+    }
+    .sec-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.3em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-top: 6px;
+    }
+    .sec-desc {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 2.1;
+      max-width: 420px;
+      padding-top: 8px;
     }
 
-    .contact-chip {
-      background: var(--card);
+    /* ════════════════════════
+       MVV
+    ════════════════════════ */
+    #mvv { background: var(--surface); }
+
+    .mvv-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
       border: 1px solid var(--border);
-      border-radius: 999px;
-      padding: 8px 20px;
+    }
+
+    .mvv-item {
+      background: var(--card);
+      padding: 52px 44px;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.4s;
+    }
+    .mvv-item::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+    .mvv-item:hover { background: #161821; }
+    .mvv-item:hover::before { opacity: 1; }
+
+    .mvv-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.5rem;
+      font-weight: 300;
+      color: rgba(200,169,110,0.12);
+      line-height: 1;
+      margin-bottom: 28px;
+    }
+    .mvv-title {
+      font-size: 0.72rem;
+      letter-spacing: 0.3em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .mvv-heading {
+      font-size: 1.05rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--text);
+      margin-bottom: 20px;
+    }
+    .mvv-body {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 2;
+    }
+
+    /* ════════════════════════
+       ABOUT
+    ════════════════════════ */
+    #about {
+      background: var(--bg);
+    }
+
+    .about-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .about-text p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 2.2;
+      margin-bottom: 20px;
+    }
+
+    .about-table { width: 100%; }
+    .about-table-row {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      border-bottom: 1px solid var(--border);
+      padding: 18px 0;
+    }
+    .about-table-row:first-child { border-top: 1px solid var(--border); }
+    .about-key {
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      color: var(--gold);
+      text-transform: uppercase;
+      padding-top: 2px;
+    }
+    .about-val {
       font-size: 0.88rem;
-      color: var(--muted);
+      color: var(--text);
+      font-weight: 300;
+      line-height: 1.9;
     }
 
-    /* ── Footer ── */
+    /* ════════════════════════
+       FOOTER
+    ════════════════════════ */
     footer {
-      background: #0a0c14;
+      background: #05060a;
       border-top: 1px solid var(--border);
-      text-align: center;
-      padding: 32px 24px;
-      color: var(--muted);
-      font-size: 0.83rem;
+      padding: 64px;
+    }
+    .footer-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+    .footer-logo-en {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.3em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .footer-logo-ja {
+      font-size: 1rem;
+      letter-spacing: 0.18em;
+      color: var(--text);
+      font-weight: 300;
+    }
+    .footer-address {
+      font-size: 0.78rem;
+      color: var(--muted2);
+      letter-spacing: 0.08em;
+      line-height: 1.8;
+      margin-top: 12px;
+    }
+    .footer-copy {
+      font-size: 0.72rem;
+      color: var(--muted2);
+      letter-spacing: 0.12em;
     }
 
-    /* ── Responsive ── */
+    /* ════════════════════════
+       RESPONSIVE
+    ════════════════════════ */
+    @media (max-width: 900px) {
+      section { padding: 90px 32px; }
+      header { padding: 0 32px; }
+      .hero-content { padding: 0 32px 100px; }
+      .hero-scroll { right: 32px; }
+
+      .sec-head {
+        flex-direction: column;
+        gap: 20px;
+        margin-bottom: 48px;
+      }
+
+      .about-layout {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+
+      .mvv-grid {
+        grid-template-columns: 1fr;
+      }
+
+      footer { padding: 48px 32px; }
+    }
+
     @media (max-width: 600px) {
-      nav { gap: 16px; }
-      nav a { font-size: 0.82rem; }
-      .about-box { padding: 28px 20px; }
-      .contact-box { padding: 40px 20px; }
-      .info-table th { width: 38%; font-size: 0.85rem; }
-      .info-table td { font-size: 0.85rem; }
+      section { padding: 72px 24px; }
+      header { padding: 0 24px; }
+      nav { gap: 24px; }
+      .hero-content { padding: 0 24px 80px; }
+      .hero-scroll { display: none; }
+      .mvv-item { padding: 36px 28px; }
+      .about-table-row { grid-template-columns: 110px 1fr; }
+      footer { padding: 40px 24px; }
+      .footer-inner { flex-direction: column; align-items: flex-start; gap: 28px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Header -->
-  <header>
-    <div class="logo">有限会社<span>神倉ビル</span></div>
+  <!-- ── Header ── -->
+  <header id="header">
+    <div class="logo-wrap">
+      <div class="logo-en">Kamikura Building</div>
+      <div class="logo-ja">有限会社 神倉ビル</div>
+    </div>
     <nav>
-      <a href="#mvv">理念</a>
-      <a href="#about">会社概要</a>
-      <a href="#contact">お問い合わせ</a>
+      <a href="#mvv">Philosophy</a>
+      <a href="#about">About</a>
     </nav>
   </header>
 
-  <!-- Hero -->
+  <!-- ── Hero ── -->
   <div class="hero">
-    <div class="fade-in">
-      <div class="hero-badge">REAL ESTATE</div>
-      <h1>信頼と誠実さで、<br><span class="highlight">地域に根ざした</span><br>不動産サービスを。</h1>
-      <p>有限会社神倉ビルは新宿区百人町を拠点に、<br>地域の皆さまの大切な資産をお守りします。</p>
-      <a href="#about" class="btn">会社概要を見る</a>
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">
+        <span class="rule"></span>
+        <span>Real Estate · Since Shinjuku</span>
+      </div>
+      <h1>
+        Your Asset,<br>
+        <em>Our Commitment.</em>
+      </h1>
+      <p class="hero-sub">
+        新宿区百人町を拠点に、地域の皆さまの<br>
+        大切な資産と暮らしを、誠実にお守りします。
+      </p>
+    </div>
+    <div class="hero-scroll">
+      <div class="scroll-line"></div>
+      <span>Scroll</span>
     </div>
   </div>
 
-  <!-- Mission / Vision / Value -->
+  <!-- ── Philosophy / MVV ── -->
   <section id="mvv">
-    <div class="section-inner">
-      <div class="fade-in">
-        <p class="section-label">Mission · Vision · Value</p>
-        <h2 class="section-title">私たちの理念</h2>
+    <div class="inner">
+      <div class="sec-head">
+        <div class="sec-head-left reveal">
+          <div class="sec-en">Philosophy</div>
+          <div class="sec-label">Mission · Vision · Value</div>
+        </div>
+        <p class="sec-desc reveal reveal-delay-1">
+          神倉ビルが不動産事業を通じて<br>
+          追い求める姿勢と約束をここに示します。
+        </p>
       </div>
-      <div class="cards mvv">
-        <div class="card fade-in">
-          <div class="card-icon">🎯</div>
-          <h3>ミッション</h3>
-          <p>地域に根ざした誠実な不動産サービスを提供し、お客様の大切な資産と暮らしを守ります。</p>
+      <div class="mvv-grid">
+        <div class="mvv-item reveal">
+          <div class="mvv-num">01</div>
+          <div class="mvv-title">Mission</div>
+          <div class="mvv-heading">地域に根ざした<br>誠実なサービス</div>
+          <p class="mvv-body">地域に根ざした誠実な不動産サービスを提供し、お客様の大切な資産と暮らしを守ります。</p>
         </div>
-        <div class="card fade-in">
-          <div class="card-icon">🌱</div>
-          <h3>ビジョン</h3>
-          <p>安心・安全な住環境を創造し続けることで、新宿の街とともに発展する不動産会社を目指します。</p>
+        <div class="mvv-item reveal reveal-delay-1">
+          <div class="mvv-num">02</div>
+          <div class="mvv-title">Vision</div>
+          <div class="mvv-heading">安心・安全な<br>住環境の創造</div>
+          <p class="mvv-body">安心・安全な住環境を創造し続けることで、新宿の街とともに発展する不動産会社を目指します。</p>
         </div>
-        <div class="card fade-in">
-          <div class="card-icon">💎</div>
-          <h3>バリュー</h3>
-          <p>誠実・信頼・透明性。お客様との長期的な信頼関係を最も大切にします。</p>
+        <div class="mvv-item reveal reveal-delay-2">
+          <div class="mvv-num">03</div>
+          <div class="mvv-title">Value</div>
+          <div class="mvv-heading">誠実・信頼・<br>透明性</div>
+          <p class="mvv-body">すべての判断の根底に誠実さを置き、お客様との長期的な信頼関係を最も大切にします。</p>
         </div>
       </div>
     </div>
   </section>
 
-  <div class="divider"></div>
-
-  <!-- About -->
+  <!-- ── About ── -->
   <section id="about">
-    <div class="section-inner">
-      <div class="fade-in">
-        <p class="section-label">About</p>
-        <h2 class="section-title">会社概要</h2>
+    <div class="inner">
+      <div class="sec-head">
+        <div class="sec-head-left reveal">
+          <div class="sec-en">About</div>
+          <div class="sec-label">Company Profile</div>
+        </div>
+        <p class="sec-desc reveal reveal-delay-1">
+          有限会社神倉ビルは、東京都新宿区百人町にビルを所有する<br>
+          不動産会社として、長年にわたり地域の皆さまの<br>
+          資産管理をサポートしてまいりました。
+        </p>
       </div>
-      <div class="about-box fade-in">
-        <p>神倉ビルは不動産会社として、新宿区百人町２－１１－２にビルを所有し、地域の皆さまの資産運用・管理を長年にわたりサポートしてまいりました。</p>
-        <table class="info-table">
-          <tr>
-            <th>会社名</th>
-            <td>有限会社 神倉ビル</td>
-          </tr>
-          <tr>
-            <th>所在地</th>
-            <td>〒169-0073 東京都新宿区百人町２－１１－２</td>
-          </tr>
-          <tr>
-            <th>代表取締役社長</th>
-            <td>神倉 真弓</td>
-          </tr>
-          <tr>
-            <th>役員</th>
-            <td>神倉 久子　／　神倉 千絵</td>
-          </tr>
-          <tr>
-            <th>事業内容</th>
-            <td>不動産の所有・賃貸管理</td>
-          </tr>
-        </table>
-      </div>
-    </div>
-  </section>
-
-  <div class="divider"></div>
-
-  <!-- Contact -->
-  <section id="contact">
-    <div class="section-inner">
-      <div class="contact-box fade-in">
-        <h2>お問い合わせ</h2>
-        <p>物件・賃貸に関するご相談はお気軽にご連絡ください。</p>
-        <a href="mailto:masaaki.kamikura@gmail.com" class="btn">メールで問い合わせる</a>
-        <div class="contact-info">
-          <div class="contact-chip">📍 新宿区百人町２－１１－２</div>
+      <div class="about-layout">
+        <div class="about-text reveal">
+          <p>
+            神倉ビルは不動産会社として、新宿区百人町２－１１－２にビルを所有。
+            地域に密着した経営を通じて、入居者・オーナー双方にとって信頼できるパートナーであり続けることを目指しています。
+          </p>
+          <p>
+            代表取締役社長 神倉真弓のもと、役員一同が誠実に業務に取り組み、地域社会への貢献を果たしてまいります。
+          </p>
+        </div>
+        <div class="reveal reveal-delay-1">
+          <div class="about-table">
+            <div class="about-table-row">
+              <div class="about-key">Company</div>
+              <div class="about-val">有限会社 神倉ビル</div>
+            </div>
+            <div class="about-table-row">
+              <div class="about-key">Address</div>
+              <div class="about-val">〒169-0073<br>東京都新宿区百人町２－１１－２</div>
+            </div>
+            <div class="about-table-row">
+              <div class="about-key">President</div>
+              <div class="about-val">代表取締役社長　神倉 真弓</div>
+            </div>
+            <div class="about-table-row">
+              <div class="about-key">Officers</div>
+              <div class="about-val">役員　神倉 久子<br>役員　神倉 千絵</div>
+            </div>
+            <div class="about-table-row">
+              <div class="about-key">Business</div>
+              <div class="about-val">不動産の所有・賃貸管理</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Footer -->
+  <!-- ── Footer ── -->
   <footer>
-    <p>&copy; 2025 有限会社 神倉ビル. All rights reserved.</p>
+    <div class="footer-inner">
+      <div>
+        <div class="footer-logo-en">Kamikura Building Co., Ltd.</div>
+        <div class="footer-logo-ja">有限会社 神倉ビル</div>
+        <div class="footer-address">
+          〒169-0073 東京都新宿区百人町２－１１－２
+        </div>
+      </div>
+      <div class="footer-copy">&copy; 2025 有限会社 神倉ビル</div>
+    </div>
   </footer>
 
   <script>
-    // Intersection Observer for fade-in
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
-      });
-    }, { threshold: 0.12 });
+    // Header scroll state
+    const header = document.getElementById('header');
+    window.addEventListener('scroll', () => {
+      header.classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
 
-    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    // Reveal on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) e.target.classList.add('visible');
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
   </script>
 
 </body>
