@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>有限会社 神倉ビル</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --card: #22263a;
+      --border: #2e3250;
+      --accent: #4f8ef7;
+      --accent2: #7c5cbf;
+      --text: #e8eaf6;
+      --muted: #8b90b0;
+      --radius: 16px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    /* ── Fade-in animation ── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── Header ── */
+    header {
+      background: linear-gradient(135deg, #0d1020 0%, #1a1d3a 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(8px);
+    }
+
+    .logo {
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: var(--text);
+    }
+    .logo span { color: var(--accent); }
+
+    nav { display: flex; gap: 28px; }
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+    nav a:hover { color: var(--accent); }
+
+    /* ── Hero ── */
+    .hero {
+      text-align: center;
+      padding: 120px 24px 80px;
+      background: radial-gradient(ellipse at 50% 0%, rgba(79,142,247,0.12) 0%, transparent 70%);
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: rgba(79,142,247,0.15);
+      border: 1px solid rgba(79,142,247,0.35);
+      color: var(--accent);
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      padding: 5px 16px;
+      border-radius: 999px;
+      margin-bottom: 28px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      line-height: 1.3;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 .highlight {
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      max-width: 560px;
+      margin: 0 auto 40px;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 13px 36px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      color: #fff;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.95rem;
+      letter-spacing: 0.05em;
+      transition: opacity 0.2s, transform 0.2s;
+      box-shadow: 0 4px 20px rgba(79,142,247,0.3);
+    }
+    .btn:hover { opacity: 0.85; transform: translateY(-2px); }
+
+    /* ── Section common ── */
+    section { padding: 90px 24px; }
+    .section-inner { max-width: 900px; margin: 0 auto; }
+
+    .section-label {
+      text-align: center;
+      font-size: 0.78rem;
+      letter-spacing: 0.15em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: clamp(1.5rem, 3vw, 2.1rem);
+      font-weight: 800;
+      margin-bottom: 48px;
+      letter-spacing: 0.03em;
+    }
+
+    /* ── Cards grid ── */
+    .cards {
+      display: grid;
+      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px 28px;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+    }
+
+    .card-icon {
+      font-size: 2rem;
+      margin-bottom: 16px;
+    }
+
+    .card h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text);
+    }
+
+    .card p {
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.75;
+    }
+
+    /* ── MVV accent cards ── */
+    .mvv .card:nth-child(1) { border-top: 3px solid var(--accent); }
+    .mvv .card:nth-child(2) { border-top: 3px solid #50c8a8; }
+    .mvv .card:nth-child(3) { border-top: 3px solid var(--accent2); }
+
+    /* ── About ── */
+    .about-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 40px 40px;
+    }
+
+    .about-box p {
+      color: var(--muted);
+      font-size: 0.97rem;
+      margin-bottom: 28px;
+    }
+
+    .info-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.93rem;
+    }
+
+    .info-table th, .info-table td {
+      padding: 13px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .info-table th {
+      color: var(--accent);
+      font-weight: 600;
+      width: 30%;
+      white-space: nowrap;
+    }
+
+    .info-table td { color: var(--text); }
+
+    .info-table tr:last-child th,
+    .info-table tr:last-child td { border-bottom: none; }
+
+    /* ── Divider ── */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* ── Contact ── */
+    .contact-box {
+      background: linear-gradient(135deg, rgba(79,142,247,0.1), rgba(124,92,191,0.1));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 56px 40px;
+      text-align: center;
+    }
+
+    .contact-box h2 {
+      font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .contact-box p {
+      color: var(--muted);
+      margin-bottom: 32px;
+      font-size: 0.97rem;
+    }
+
+    .contact-info {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 28px;
+    }
+
+    .contact-chip {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 8px 20px;
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+
+    /* ── Footer ── */
+    footer {
+      background: #0a0c14;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 32px 24px;
+      color: var(--muted);
+      font-size: 0.83rem;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      nav { gap: 16px; }
+      nav a { font-size: 0.82rem; }
+      .about-box { padding: 28px 20px; }
+      .contact-box { padding: 40px 20px; }
+      .info-table th { width: 38%; font-size: 0.85rem; }
+      .info-table td { font-size: 0.85rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="logo">有限会社<span>神倉ビル</span></div>
+    <nav>
+      <a href="#mvv">理念</a>
+      <a href="#about">会社概要</a>
+      <a href="#contact">お問い合わせ</a>
+    </nav>
+  </header>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="fade-in">
+      <div class="hero-badge">REAL ESTATE</div>
+      <h1>信頼と誠実さで、<br><span class="highlight">地域に根ざした</span><br>不動産サービスを。</h1>
+      <p>有限会社神倉ビルは新宿区百人町を拠点に、<br>地域の皆さまの大切な資産をお守りします。</p>
+      <a href="#about" class="btn">会社概要を見る</a>
+    </div>
+  </div>
+
+  <!-- Mission / Vision / Value -->
+  <section id="mvv">
+    <div class="section-inner">
+      <div class="fade-in">
+        <p class="section-label">Mission · Vision · Value</p>
+        <h2 class="section-title">私たちの理念</h2>
+      </div>
+      <div class="cards mvv">
+        <div class="card fade-in">
+          <div class="card-icon">🎯</div>
+          <h3>ミッション</h3>
+          <p>地域に根ざした誠実な不動産サービスを提供し、お客様の大切な資産と暮らしを守ります。</p>
+        </div>
+        <div class="card fade-in">
+          <div class="card-icon">🌱</div>
+          <h3>ビジョン</h3>
+          <p>安心・安全な住環境を創造し続けることで、新宿の街とともに発展する不動産会社を目指します。</p>
+        </div>
+        <div class="card fade-in">
+          <div class="card-icon">💎</div>
+          <h3>バリュー</h3>
+          <p>誠実・信頼・透明性。お客様との長期的な信頼関係を最も大切にします。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- About -->
+  <section id="about">
+    <div class="section-inner">
+      <div class="fade-in">
+        <p class="section-label">About</p>
+        <h2 class="section-title">会社概要</h2>
+      </div>
+      <div class="about-box fade-in">
+        <p>神倉ビルは不動産会社として、新宿区百人町２－１１－２にビルを所有し、地域の皆さまの資産運用・管理を長年にわたりサポートしてまいりました。</p>
+        <table class="info-table">
+          <tr>
+            <th>会社名</th>
+            <td>有限会社 神倉ビル</td>
+          </tr>
+          <tr>
+            <th>所在地</th>
+            <td>〒169-0073 東京都新宿区百人町２－１１－２</td>
+          </tr>
+          <tr>
+            <th>代表取締役社長</th>
+            <td>神倉 真弓</td>
+          </tr>
+          <tr>
+            <th>役員</th>
+            <td>神倉 久子　／　神倉 千絵</td>
+          </tr>
+          <tr>
+            <th>事業内容</th>
+            <td>不動産の所有・賃貸管理</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Contact -->
+  <section id="contact">
+    <div class="section-inner">
+      <div class="contact-box fade-in">
+        <h2>お問い合わせ</h2>
+        <p>物件・賃貸に関するご相談はお気軽にご連絡ください。</p>
+        <a href="mailto:masaaki.kamikura@gmail.com" class="btn">メールで問い合わせる</a>
+        <div class="contact-info">
+          <div class="contact-chip">📍 新宿区百人町２－１１－２</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 有限会社 神倉ビル. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Intersection Observer for fade-in
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
