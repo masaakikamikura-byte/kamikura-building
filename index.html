@@ -3,21 +3,35 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>有限会社 神倉ビル</title>
+  <title>有限会社 神倉ビル｜東京・新宿区百人町の不動産</title>
+  <meta name="description" content="有限会社神倉ビルは、東京都新宿区百人町に根ざした不動産会社です。地域とともに、誠実に。大切な資産と暮らしをお守りします。" />
+  <meta name="theme-color" content="#0a0a0b" />
+  <meta property="og:title" content="有限会社 神倉ビル" />
+  <meta property="og:description" content="東京・新宿区百人町に根ざした不動産会社。地域とともに、誠実に。" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://kamikura-building.com/" />
+  <meta property="og:image" content="https://kamikura-building.com/assets/hero.jpg" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230a0a0b'/%3E%3Ctext x='32' y='44' font-family='serif' font-size='34' fill='%23c8a96e' text-anchor='middle'%3E神%3C/text%3E%3C/svg%3E" />
+  <link rel="preload" as="image" href="assets/hero.jpg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Noto+Sans+JP:wght@300;400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Shippori+Mincho:wght@400;500&family=Noto+Sans+JP:wght@300;400&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
       --gold: #c8a96e;
       --gold-light: #e8d5aa;
-      --dark: #0d0d0d;
-      --mid: #1a1a1a;
+      --gold-faint: rgba(200, 169, 110, .14);
+      --dark: #0a0a0b;
+      --mid: #121214;
       --text: #e8e4de;
-      --text-muted: #8a8480;
+      --text-muted: #8d8781;
       --white: #ffffff;
+      --hairline: rgba(255, 255, 255, .07);
+      --serif-en: 'Cormorant Garamond', serif;
+      --serif-ja: 'Shippori Mincho', serif;
+      --ease: cubic-bezier(.22, 1, .36, 1);
     }
 
     html { scroll-behavior: smooth; }
@@ -28,6 +42,21 @@
       color: var(--text);
       font-weight: 300;
       line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection { background: rgba(200, 169, 110, .85); color: #0a0a0b; }
+
+    section { scroll-margin-top: 4rem; }
+
+    /* ── FILM GRAIN ── */
+    .grain {
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      pointer-events: none;
+      opacity: .04;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     }
 
     /* ── NAV ── */
@@ -38,31 +67,72 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 1.5rem 4rem;
-      background: linear-gradient(to bottom, rgba(0,0,0,.7) 0%, transparent 100%);
-      transition: background .4s;
+      padding: 1.4rem 4rem;
+      border-bottom: 1px solid transparent;
+      transition: background .5s var(--ease), border-color .5s var(--ease), padding .5s var(--ease);
     }
-    nav.scrolled { background: rgba(13,13,13,.95); }
+    nav.scrolled {
+      background: rgba(10, 10, 11, .82);
+      -webkit-backdrop-filter: blur(14px);
+      backdrop-filter: blur(14px);
+      border-bottom-color: var(--gold-faint);
+      padding: 1rem 4rem;
+    }
 
     .nav-logo {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.1rem;
-      letter-spacing: .15em;
-      color: var(--gold-light);
+      display: flex;
+      align-items: center;
+      gap: .9rem;
       text-decoration: none;
+    }
+    .logo-mark {
+      width: 7px;
+      height: 7px;
+      background: var(--gold);
+      transform: rotate(45deg);
+      flex-shrink: 0;
+    }
+    .logo-text { display: flex; flex-direction: column; line-height: 1.3; }
+    .logo-ja {
+      font-family: var(--serif-ja);
+      font-size: .95rem;
+      letter-spacing: .3em;
+      color: var(--text);
+    }
+    .logo-en {
+      font-family: var(--serif-en);
+      font-size: .58rem;
+      letter-spacing: .38em;
+      text-transform: uppercase;
+      color: var(--gold);
     }
 
-    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links { display: flex; gap: 3rem; list-style: none; }
     .nav-links a {
+      position: relative;
       color: var(--text);
       text-decoration: none;
-      font-size: .75rem;
-      letter-spacing: .2em;
+      font-family: var(--serif-en);
+      font-size: .78rem;
+      letter-spacing: .28em;
       text-transform: uppercase;
-      opacity: .8;
+      opacity: .75;
       transition: opacity .3s, color .3s;
+      padding-bottom: .35rem;
     }
-    .nav-links a:hover { opacity: 1; color: var(--gold); }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: 0;
+      width: 100%;
+      height: 1px;
+      background: var(--gold);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform .5s var(--ease);
+    }
+    .nav-links a:hover { opacity: 1; color: var(--gold-light); }
+    .nav-links a:hover::after { transform: scaleX(1); transform-origin: left; }
 
     /* ── HERO ── */
     .hero {
@@ -78,56 +148,68 @@
       position: absolute;
       inset: 0;
       background: url('assets/hero.jpg') center center / cover no-repeat;
-      transform: scale(1.05);
-      transition: transform 8s ease;
+      animation: heroZoom 10s var(--ease) both;
     }
-    .hero:hover .hero-bg { transform: scale(1); }
+    @keyframes heroZoom {
+      from { transform: scale(1.08); }
+      to   { transform: scale(1); }
+    }
 
     .hero-overlay {
       position: absolute;
       inset: 0;
       background: linear-gradient(
         to bottom,
-        rgba(0,0,0,.15) 0%,
-        rgba(0,0,0,.1) 40%,
-        rgba(0,0,0,.75) 100%
+        rgba(10, 10, 11, .42) 0%,
+        rgba(10, 10, 11, .05) 38%,
+        rgba(10, 10, 11, .82) 100%
       );
+    }
+
+    .hero-frame {
+      position: absolute;
+      inset: 20px;
+      border: 1px solid rgba(232, 213, 170, .18);
+      z-index: 2;
+      pointer-events: none;
     }
 
     .hero-content {
       position: relative;
-      z-index: 2;
-      padding: 0 4rem 6rem;
-      max-width: 900px;
+      z-index: 3;
+      padding: 0 5.5rem 7rem;
+      max-width: 980px;
     }
 
     .hero-eyebrow {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: .85rem;
-      letter-spacing: .35em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 1.5rem;
       display: flex;
       align-items: center;
-      gap: 1rem;
+      gap: 1.1rem;
+      font-family: var(--serif-en);
+      font-size: .76rem;
+      letter-spacing: .42em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.8rem;
+      animation: rise 1.1s .25s var(--ease) both;
     }
     .hero-eyebrow::before {
       content: '';
       display: block;
-      width: 40px;
+      width: 48px;
       height: 1px;
       background: var(--gold);
     }
 
     .hero-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2.8rem, 6vw, 5rem);
+      font-family: var(--serif-en);
+      font-size: clamp(2.9rem, 6.4vw, 5.4rem);
       font-weight: 300;
-      line-height: 1.15;
-      letter-spacing: .02em;
+      line-height: 1.12;
+      letter-spacing: .015em;
       color: var(--white);
-      margin-bottom: 1.25rem;
+      margin-bottom: 1.6rem;
+      animation: rise 1.1s .45s var(--ease) both;
     }
     .hero-title em {
       font-style: italic;
@@ -135,219 +217,372 @@
     }
 
     .hero-sub {
-      font-size: .9rem;
-      color: rgba(255,255,255,.75);
-      letter-spacing: .05em;
-      line-height: 2;
+      font-family: var(--serif-ja);
+      font-size: .95rem;
+      color: rgba(255, 255, 255, .78);
+      letter-spacing: .14em;
+      line-height: 2.3;
+      animation: rise 1.1s .65s var(--ease) both;
     }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(26px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    .hero-vertical {
+      position: absolute;
+      top: 50%;
+      right: 4.4rem;
+      transform: translateY(-50%);
+      z-index: 3;
+      writing-mode: vertical-rl;
+      font-family: var(--serif-ja);
+      font-size: .82rem;
+      letter-spacing: .55em;
+      color: rgba(255, 255, 255, .6);
+      display: flex;
+      align-items: center;
+      gap: 1.6rem;
+      animation: fadeIn 1.6s 1s var(--ease) both;
+    }
+    .hero-vertical::after {
+      content: '';
+      width: 1px;
+      height: 72px;
+      background: linear-gradient(to bottom, rgba(200, 169, 110, .7), transparent);
+    }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
     .scroll-indicator {
       position: absolute;
-      bottom: 2.5rem;
-      right: 4rem;
-      z-index: 2;
+      bottom: 2.6rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: .6rem;
-      font-size: .65rem;
-      letter-spacing: .25em;
-      color: rgba(255,255,255,.5);
+      gap: .7rem;
+      font-family: var(--serif-en);
+      font-size: .62rem;
+      letter-spacing: .4em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, .45);
+      animation: fadeIn 1.6s 1.4s var(--ease) both;
     }
     .scroll-line {
       width: 1px;
-      height: 60px;
-      background: linear-gradient(to bottom, rgba(200,169,110,.8), transparent);
-      animation: scrollPulse 2s ease-in-out infinite;
+      height: 52px;
+      overflow: hidden;
+      position: relative;
+      background: rgba(255, 255, 255, .12);
     }
-    @keyframes scrollPulse {
-      0%,100% { opacity: .4; transform: scaleY(1); }
-      50% { opacity: 1; transform: scaleY(1.1); }
+    .scroll-line::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--gold);
+      animation: scrollDrop 2.2s var(--ease) infinite;
+    }
+    @keyframes scrollDrop {
+      0%   { transform: translateY(-100%); }
+      55%  { transform: translateY(0); }
+      100% { transform: translateY(100%); }
     }
 
     /* ── SECTION BASE ── */
-    section { padding: 8rem 4rem; }
+    .section { padding: 9.5rem 5.5rem; position: relative; }
+
+    .sec-inner { max-width: 1180px; margin: 0 auto; position: relative; }
 
     .section-label {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: .8rem;
-      letter-spacing: .35em;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-family: var(--serif-en);
+      font-size: .74rem;
+      letter-spacing: .42em;
       text-transform: uppercase;
       color: var(--gold);
-      margin-bottom: .75rem;
+      margin-bottom: 1.2rem;
+    }
+    .section-label::before {
+      content: '';
+      display: block;
+      width: 36px;
+      height: 1px;
+      background: var(--gold);
     }
 
     .section-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2rem, 4vw, 3rem);
+      font-family: var(--serif-en);
+      font-size: clamp(2.1rem, 4.2vw, 3.3rem);
       font-weight: 300;
       color: var(--white);
-      margin-bottom: 1.5rem;
-      line-height: 1.2;
+      line-height: 1.18;
+      margin-bottom: 2rem;
+    }
+    .section-title em { font-style: italic; color: var(--gold-light); }
+
+    .section-lead {
+      font-family: var(--serif-ja);
+      font-size: .95rem;
+      color: var(--text-muted);
+      letter-spacing: .1em;
+      line-height: 2.4;
+      max-width: 580px;
     }
 
-    .divider {
-      width: 60px;
-      height: 1px;
-      background: var(--gold);
-      margin-bottom: 2rem;
+    .watermark {
+      position: absolute;
+      font-family: var(--serif-ja);
+      font-size: clamp(8rem, 18vw, 16rem);
+      font-weight: 400;
+      color: rgba(200, 169, 110, .035);
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+      white-space: nowrap;
     }
 
     /* ── PHILOSOPHY ── */
-    .philosophy {
-      background: var(--mid);
-      position: relative;
-      overflow: hidden;
-    }
-    .philosophy::before {
-      content: 'MVV';
-      position: absolute;
-      top: 3rem; right: -1rem;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 12rem;
-      font-weight: 300;
-      color: rgba(200,169,110,.04);
-      pointer-events: none;
-      letter-spacing: -.02em;
-    }
+    .philosophy { background: var(--mid); overflow: hidden; }
+    .philosophy .watermark { top: 4rem; right: -2rem; }
 
-    .philosophy-inner {
-      max-width: 1200px;
-      margin: 0 auto;
+    .mvv-list {
+      margin-top: 5rem;
+      border-top: 1px solid var(--hairline);
     }
-
-    .mvv-grid {
+    .mvv-row {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 3px;
-      margin-top: 4rem;
+      grid-template-columns: 7rem 17rem 1fr;
+      gap: 2.5rem;
+      align-items: baseline;
+      padding: 3.4rem 1.5rem;
+      border-bottom: 1px solid var(--hairline);
+      transition: background .5s var(--ease), padding-left .5s var(--ease), border-color .5s var(--ease);
     }
-
-    .mvv-card {
-      background: rgba(255,255,255,.03);
-      border: 1px solid rgba(200,169,110,.12);
-      padding: 3rem 2.5rem;
-      position: relative;
-      transition: background .3s, border-color .3s;
-    }
-    .mvv-card:hover {
-      background: rgba(200,169,110,.06);
-      border-color: rgba(200,169,110,.3);
+    .mvv-row:hover {
+      background: rgba(200, 169, 110, .045);
+      padding-left: 2.4rem;
+      border-bottom-color: rgba(200, 169, 110, .3);
     }
 
     .mvv-number {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 4rem;
-      font-weight: 300;
-      color: rgba(200,169,110,.2);
-      line-height: 1;
-      margin-bottom: 1.5rem;
+      font-family: var(--serif-en);
+      font-size: 1rem;
+      letter-spacing: .3em;
+      color: rgba(200, 169, 110, .55);
     }
 
     .mvv-heading {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.4rem;
+      font-family: var(--serif-en);
+      font-size: 1.7rem;
+      font-weight: 300;
+      letter-spacing: .06em;
       color: var(--gold-light);
-      margin-bottom: .5rem;
-      letter-spacing: .05em;
+      line-height: 1.3;
     }
-
     .mvv-ja {
-      font-size: .9rem;
+      display: block;
+      font-family: var(--serif-ja);
+      font-size: .88rem;
+      letter-spacing: .14em;
       color: var(--text);
-      margin-bottom: 1rem;
-      letter-spacing: .05em;
+      margin-top: .5rem;
     }
 
     .mvv-body {
-      font-size: .82rem;
+      font-size: .85rem;
       color: var(--text-muted);
-      line-height: 1.9;
+      line-height: 2.1;
+      letter-spacing: .04em;
+      max-width: 520px;
     }
 
     /* ── ABOUT ── */
-    .about {
-      background: var(--dark);
-    }
+    .about { background: var(--dark); overflow: hidden; }
+    .about .watermark { bottom: 2rem; left: -3rem; }
+
     .about-inner {
-      max-width: 1200px;
+      max-width: 1180px;
       margin: 0 auto;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 8rem;
+      gap: 7rem;
       align-items: start;
+      position: relative;
+    }
+
+    .about-catch {
+      font-family: var(--serif-ja);
+      font-size: 1.35rem;
+      font-weight: 400;
+      letter-spacing: .2em;
+      color: var(--text);
+      line-height: 2.2;
+      margin-bottom: 2.5rem;
     }
 
     .about-text p {
-      font-size: .9rem;
+      font-size: .87rem;
       color: var(--text-muted);
-      margin-bottom: 1.5rem;
-      line-height: 2;
+      margin-bottom: 1.6rem;
+      line-height: 2.2;
+      letter-spacing: .04em;
     }
 
     .profile-table {
       width: 100%;
       border-collapse: collapse;
+      border-top: 1px solid var(--hairline);
     }
-    .profile-table tr {
-      border-bottom: 1px solid rgba(255,255,255,.06);
-    }
+    .profile-table tr { border-bottom: 1px solid var(--hairline); }
     .profile-table td {
-      padding: 1rem 0;
-      font-size: .82rem;
+      padding: 1.45rem .25rem;
+      font-size: .84rem;
       vertical-align: top;
     }
     .profile-table td:first-child {
+      font-family: var(--serif-en);
       color: var(--gold);
-      letter-spacing: .1em;
-      width: 6rem;
-      font-size: .75rem;
+      letter-spacing: .26em;
+      text-transform: uppercase;
+      width: 8.5rem;
+      font-size: .68rem;
       padding-right: 1.5rem;
+      padding-top: 1.7rem;
     }
     .profile-table td:last-child {
       color: var(--text-muted);
-      line-height: 1.9;
+      line-height: 2;
+      letter-spacing: .05em;
     }
 
     /* ── FOOTER ── */
     footer {
-      background: rgba(0,0,0,.5);
-      border-top: 1px solid rgba(200,169,110,.1);
-      padding: 3rem 4rem;
+      background: var(--mid);
+      border-top: 1px solid var(--gold-faint);
+      padding: 5rem 5.5rem 2.4rem;
+    }
+    .footer-inner { max-width: 1180px; margin: 0 auto; }
+
+    .footer-top {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 2rem;
+      padding-bottom: 3.5rem;
+    }
+    .footer-brand .logo-mark { margin-bottom: 1.1rem; }
+    .footer-logo-en {
+      font-family: var(--serif-en);
+      font-size: 1.9rem;
+      font-weight: 300;
+      letter-spacing: .12em;
+      color: var(--white);
+      line-height: 1.2;
+    }
+    .footer-logo-ja {
+      font-family: var(--serif-ja);
+      font-size: .82rem;
+      letter-spacing: .4em;
+      color: var(--gold);
+      margin-top: .6rem;
+    }
+    .footer-address {
+      text-align: right;
+      font-size: .78rem;
+      color: var(--text-muted);
+      letter-spacing: .08em;
+      line-height: 2.1;
+    }
+
+    .footer-bottom {
       display: flex;
       align-items: center;
       justify-content: space-between;
-    }
-
-    .footer-logo {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1rem;
-      letter-spacing: .15em;
-      color: var(--gold-light);
+      gap: 1rem;
+      border-top: 1px solid var(--hairline);
+      padding-top: 2.2rem;
     }
     .footer-copy {
-      font-size: .72rem;
+      font-size: .68rem;
       color: var(--text-muted);
-      letter-spacing: .1em;
+      letter-spacing: .14em;
+    }
+    .footer-place {
+      font-family: var(--serif-en);
+      font-size: .66rem;
+      letter-spacing: .38em;
+      text-transform: uppercase;
+      color: rgba(200, 169, 110, .6);
+    }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 1.1s var(--ease), transform 1.1s var(--ease);
+    }
+    .reveal.in { opacity: 1; transform: none; }
+
+    /* ── REDUCED MOTION ── */
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+      .reveal { opacity: 1; transform: none; }
     }
 
     /* ── RESPONSIVE ── */
     @media (max-width: 900px) {
-      nav { padding: 1.2rem 1.5rem; }
-      .hero-content { padding: 0 1.5rem 5rem; }
-      .scroll-indicator { right: 1.5rem; }
-      section { padding: 5rem 1.5rem; }
-      .mvv-grid { grid-template-columns: 1fr; gap: 2px; }
-      .about-inner { grid-template-columns: 1fr; gap: 3rem; }
-      footer { flex-direction: column; gap: 1rem; text-align: center; }
+      nav, nav.scrolled { padding: 1rem 1.4rem; }
+      .nav-links { gap: 1.6rem; }
+      .logo-ja { font-size: .85rem; letter-spacing: .2em; }
+
+      .hero-frame { inset: 12px; }
+      .hero-content { padding: 0 1.6rem 6.5rem; }
+      .hero-vertical { display: none; }
+
+      .section { padding: 5.5rem 1.6rem; }
+
+      .mvv-row {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        padding: 2.6rem .5rem;
+      }
+      .mvv-row:hover { padding-left: .5rem; }
+      .mvv-body { max-width: none; }
+
+      .about-inner { grid-template-columns: 1fr; gap: 3.5rem; }
+
+      footer { padding: 3.5rem 1.6rem 2rem; }
+      .footer-top { flex-direction: column; align-items: flex-start; }
+      .footer-address { text-align: left; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; gap: .6rem; }
     }
   </style>
 </head>
 <body>
 
+  <div class="grain" aria-hidden="true"></div>
+
   <!-- NAV -->
   <nav id="nav">
-    <a href="#" class="nav-logo">Kamikura Building</a>
+    <a href="#top" class="nav-logo" aria-label="神倉ビル トップへ">
+      <span class="logo-mark" aria-hidden="true"></span>
+      <span class="logo-text">
+        <span class="logo-ja">神倉ビル</span>
+        <span class="logo-en">Kamikura Building</span>
+      </span>
+    </a>
     <ul class="nav-links">
       <li><a href="#philosophy">Philosophy</a></li>
       <li><a href="#about">About</a></li>
@@ -358,46 +593,47 @@
   <section class="hero" id="top">
     <div class="hero-bg"></div>
     <div class="hero-overlay"></div>
+    <div class="hero-frame" aria-hidden="true"></div>
     <div class="hero-content">
-      <p class="hero-eyebrow">Real Estate · Since Shinjuku</p>
+      <p class="hero-eyebrow">Tokyo — Shinjuku, Hyakunincho</p>
       <h1 class="hero-title">Your Asset,<br><em>Our Commitment.</em></h1>
       <p class="hero-sub">
         新宿区百人町を拠点に、地域の皆さまの<br>
         大切な資産と暮らしを、誠実にお守りします。
       </p>
     </div>
-    <div class="scroll-indicator">
+    <p class="hero-vertical" aria-hidden="true">新宿・百人町に根ざして</p>
+    <div class="scroll-indicator" aria-hidden="true">
       <div class="scroll-line"></div>
       <span>Scroll</span>
     </div>
   </section>
 
   <!-- PHILOSOPHY -->
-  <section class="philosophy" id="philosophy">
-    <div class="philosophy-inner">
-      <p class="section-label">Philosophy</p>
-      <h2 class="section-title">Mission · Vision · Value</h2>
-      <div class="divider"></div>
-      <p style="font-size:.9rem;color:var(--text-muted);max-width:560px;line-height:2;">
-        神倉ビルが不動産事業を通じて<br>追い求める姿勢と約束をここに示します。
-      </p>
-      <div class="mvv-grid">
-        <div class="mvv-card">
-          <div class="mvv-number">01</div>
-          <div class="mvv-heading">Mission</div>
-          <div class="mvv-ja">地域に根ざした誠実なサービス</div>
+  <section class="section philosophy" id="philosophy">
+    <p class="watermark" aria-hidden="true">理念</p>
+    <div class="sec-inner">
+      <div class="reveal">
+        <p class="section-label">Philosophy</p>
+        <h2 class="section-title">Mission · Vision · <em>Value</em></h2>
+        <p class="section-lead">
+          神倉ビルが不動産事業を通じて<br>追い求める姿勢と約束を、ここに示します。
+        </p>
+      </div>
+      <div class="mvv-list">
+        <div class="mvv-row reveal">
+          <span class="mvv-number">01</span>
+          <h3 class="mvv-heading">Mission<span class="mvv-ja">地域に根ざした誠実なサービス</span></h3>
           <p class="mvv-body">地域に根ざした誠実な不動産サービスを提供し、お客様の大切な資産と暮らしを守ります。</p>
         </div>
-        <div class="mvv-card">
-          <div class="mvv-number">02</div>
-          <div class="mvv-heading">Vision</div>
-          <div class="mvv-ja">安心・安全な住環境の創造</div>
+        <div class="mvv-row reveal" style="transition-delay:.12s">
+          <span class="mvv-number">02</span>
+          <h3 class="mvv-heading">Vision<span class="mvv-ja">安心・安全な住環境の創造</span></h3>
           <p class="mvv-body">安心・安全な住環境を創造し続けることで、新宿の街とともに発展する不動産会社を目指します。</p>
         </div>
-        <div class="mvv-card">
-          <div class="mvv-number">03</div>
-          <div class="mvv-heading">Value</div>
-          <div class="mvv-ja">誠実・信頼・透明性</div>
+        <div class="mvv-row reveal" style="transition-delay:.24s">
+          <span class="mvv-number">03</span>
+          <h3 class="mvv-heading">Value<span class="mvv-ja">誠実・信頼・透明性</span></h3>
           <p class="mvv-body">すべての判断の根底に誠実さを置き、お客様との長期的な信頼関係を最も大切にします。</p>
         </div>
       </div>
@@ -405,17 +641,18 @@
   </section>
 
   <!-- ABOUT -->
-  <section class="about" id="about">
+  <section class="section about" id="about">
+    <p class="watermark" aria-hidden="true">神倉</p>
     <div class="about-inner">
-      <div class="about-text">
+      <div class="about-text reveal">
         <p class="section-label">About</p>
-        <h2 class="section-title">Company<br>Profile</h2>
-        <div class="divider"></div>
+        <h2 class="section-title">Company<br><em>Profile</em></h2>
+        <p class="about-catch">街とともに、誠実に。</p>
         <p>有限会社神倉ビルは、東京都新宿区百人町にビルを所有する不動産会社として、長年にわたり地域の皆さまの資産管理をサポートしてまいりました。</p>
         <p>地域に密着した経営を通じて、入居者・オーナー双方にとって信頼できるパートナーであり続けることを目指しています。</p>
         <p>代表取締役社長 神倉真弓のもと、役員一同が誠実に業務に取り組み、地域社会への貢献を果たしてまいります。</p>
       </div>
-      <div class="about-data">
+      <div class="about-data reveal" style="transition-delay:.15s">
         <table class="profile-table">
           <tr>
             <td>Company</td>
@@ -444,8 +681,23 @@
 
   <!-- FOOTER -->
   <footer>
-    <span class="footer-logo">Kamikura Building Co., Ltd.</span>
-    <span class="footer-copy">© 2025 有限会社 神倉ビル　〒169-0073 東京都新宿区百人町２－１１－２</span>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <span class="logo-mark" aria-hidden="true"></span>
+          <p class="footer-logo-en">Kamikura Building</p>
+          <p class="footer-logo-ja">有限会社 神倉ビル</p>
+        </div>
+        <p class="footer-address">
+          〒169-0073<br>
+          東京都新宿区百人町２－１１－２
+        </p>
+      </div>
+      <div class="footer-bottom">
+        <span class="footer-copy">© 2026 有限会社 神倉ビル</span>
+        <span class="footer-place">Shinjuku, Tokyo</span>
+      </div>
+    </div>
   </footer>
 
   <script>
@@ -453,7 +705,18 @@
     const nav = document.getElementById('nav');
     window.addEventListener('scroll', () => {
       nav.classList.toggle('scrolled', window.scrollY > 60);
-    });
+    }, { passive: true });
+
+    // Scroll reveal
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          e.target.classList.add('in');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
   </script>
 </body>
 </html>
